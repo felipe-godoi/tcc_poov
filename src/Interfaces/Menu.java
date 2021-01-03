@@ -6,6 +6,19 @@
 
 package Interfaces;
 
+import Cliente.Cliente;
+import DAO.ClienteDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author feeh0
@@ -26,21 +39,542 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        pnClientes = new javax.swing.JPanel();
+        pnContentClientes = new javax.swing.JPanel();
+        pnBuscar = new javax.swing.JPanel();
+        tfBuscar = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbClientes = new javax.swing.JTable();
+        pnAcoesClientes = new javax.swing.JPanel();
+        tfCpf = new javax.swing.JTextField();
+        lbCpf = new javax.swing.JLabel();
+        lbNome = new javax.swing.JLabel();
+        tfNome = new javax.swing.JTextField();
+        lbTelefone = new javax.swing.JLabel();
+        tfTelefone = new javax.swing.JTextField();
+        lbEndereco = new javax.swing.JLabel();
+        lbInstagram = new javax.swing.JLabel();
+        lbFacebook = new javax.swing.JLabel();
+        tfFacebook = new javax.swing.JTextField();
+        tfInstagram = new javax.swing.JTextField();
+        tfEndereco = new javax.swing.JTextField();
+        lbCartao = new javax.swing.JLabel();
+        tfCartao = new javax.swing.JTextField();
+        lpClientes = new javax.swing.JLayeredPane();
+        lpAcoes = new javax.swing.JPanel();
+        btInserir = new javax.swing.JButton();
+        btRemover = new javax.swing.JButton();
+        btEditar = new javax.swing.JButton();
+        btImprimirClientes = new javax.swing.JButton();
+        lpEditar = new javax.swing.JPanel();
+        btCancelar = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
+        pnQueijos = new javax.swing.JPanel();
+        pnPedidos = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridLayout());
+
+        pnContentClientes.setLayout(new javax.swing.BoxLayout(pnContentClientes, javax.swing.BoxLayout.Y_AXIS));
+
+        pnBuscar.setMaximumSize(new java.awt.Dimension(32767, 5));
+        pnBuscar.setMinimumSize(new java.awt.Dimension(100, 5));
+
+        tfBuscar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfBuscar.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                tfBuscarInputMethodTextChanged(evt);
+            }
+        });
+        tfBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Digite um CPF ou Nome para buscar");
+
+        javax.swing.GroupLayout pnBuscarLayout = new javax.swing.GroupLayout(pnBuscar);
+        pnBuscar.setLayout(pnBuscarLayout);
+        pnBuscarLayout.setHorizontalGroup(
+            pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnBuscarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        pnBuscarLayout.setVerticalGroup(
+            pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnBuscarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(jLabel1)))
         );
+
+        pnContentClientes.add(pnBuscar);
+        pnContentClientes.add(filler1);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tbClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbClientes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tbClientesFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tbClientesFocusLost(evt);
+            }
+        });
+        tbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbClientesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbClientes);
+
+        pnContentClientes.add(jScrollPane1);
+
+        pnAcoesClientes.setMinimumSize(new java.awt.Dimension(100, 80));
+
+        tfCpf.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfCpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCpfActionPerformed(evt);
+            }
+        });
+
+        lbCpf.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbCpf.setText("CPF");
+
+        lbNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbNome.setText("Nome");
+
+        tfNome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbTelefone.setText("Telefone");
+
+        tfTelefone.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbEndereco.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbEndereco.setText("Endereço");
+
+        lbInstagram.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbInstagram.setText("Instagram");
+
+        lbFacebook.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbFacebook.setText("Facebook");
+
+        tfFacebook.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        tfInstagram.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        tfEndereco.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfEndereco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfEnderecoActionPerformed(evt);
+            }
+        });
+
+        lbCartao.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbCartao.setText("Cartão de crédito");
+
+        tfCartao.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfCartao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfCartaoActionPerformed(evt);
+            }
+        });
+
+        lpClientes.setLayout(new javax.swing.OverlayLayout(lpClientes));
+
+        btInserir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btInserir.setText("Inserir");
+        btInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btInserirActionPerformed(evt);
+            }
+        });
+
+        btRemover.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btRemover.setText("Remover");
+        btRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverActionPerformed(evt);
+            }
+        });
+
+        btEditar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btEditar.setText("Editar");
+        btEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEditarActionPerformed(evt);
+            }
+        });
+
+        btImprimirClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btImprimirClientes.setText("Imprimir");
+        btImprimirClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirClientesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpAcoesLayout = new javax.swing.GroupLayout(lpAcoes);
+        lpAcoes.setLayout(lpAcoesLayout);
+        lpAcoesLayout.setHorizontalGroup(
+            lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpAcoesLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btImprimirClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        lpAcoesLayout.setVerticalGroup(
+            lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpAcoesLayout.createSequentialGroup()
+                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimirClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 13, Short.MAX_VALUE))
+        );
+
+        lpClientes.add(lpAcoes);
+
+        btCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
+
+        btSalvar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btSalvar.setText("Salvar");
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpEditarLayout = new javax.swing.GroupLayout(lpEditar);
+        lpEditar.setLayout(lpEditarLayout);
+        lpEditarLayout.setHorizontalGroup(
+            lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpEditarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        lpEditarLayout.setVerticalGroup(
+            lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpEditarLayout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCancelar)
+                    .addComponent(btSalvar))
+                .addGap(46, 46, 46))
+        );
+
+        lpClientes.add(lpEditar);
+
+        javax.swing.GroupLayout pnAcoesClientesLayout = new javax.swing.GroupLayout(pnAcoesClientes);
+        pnAcoesClientes.setLayout(pnAcoesClientesLayout);
+        pnAcoesClientesLayout.setHorizontalGroup(
+            pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientesLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbTelefone)
+                    .addComponent(lbNome)
+                    .addComponent(lbCpf)
+                    .addComponent(lbCartao))
+                .addGap(18, 18, 18)
+                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tfCartao, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                    .addComponent(tfNome, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfTelefone, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfCpf, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGap(61, 61, 61)
+                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbFacebook)
+                    .addComponent(lbInstagram)
+                    .addComponent(lbEndereco))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tfInstagram, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(tfEndereco)
+                    .addComponent(tfFacebook))
+                .addGap(12, 12, 12)
+                .addComponent(lpClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+        );
+        pnAcoesClientesLayout.setVerticalGroup(
+            pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnAcoesClientesLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lpClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnAcoesClientesLayout.createSequentialGroup()
+                        .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnAcoesClientesLayout.createSequentialGroup()
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbCpf))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbNome))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbTelefone)))
+                            .addGroup(pnAcoesClientesLayout.createSequentialGroup()
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbEndereco))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfInstagram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbInstagram))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfFacebook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbFacebook))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfCartao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbCartao))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnContentClientes.add(pnAcoesClientes);
+
+        javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
+        pnClientes.setLayout(pnClientesLayout);
+        pnClientesLayout.setHorizontalGroup(
+            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnContentClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnClientesLayout.setVerticalGroup(
+            pnClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnContentClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Clientes", pnClientes);
+
+        javax.swing.GroupLayout pnQueijosLayout = new javax.swing.GroupLayout(pnQueijos);
+        pnQueijos.setLayout(pnQueijosLayout);
+        pnQueijosLayout.setHorizontalGroup(
+            pnQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1072, Short.MAX_VALUE)
+        );
+        pnQueijosLayout.setVerticalGroup(
+            pnQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 611, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Queijos", pnQueijos);
+
+        javax.swing.GroupLayout pnPedidosLayout = new javax.swing.GroupLayout(pnPedidos);
+        pnPedidos.setLayout(pnPedidosLayout);
+        pnPedidosLayout.setHorizontalGroup(
+            pnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1072, Short.MAX_VALUE)
+        );
+        pnPedidosLayout.setVerticalGroup(
+            pnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 611, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Pedidos", pnPedidos);
+
+        getContentPane().add(jTabbedPane1);
+        jTabbedPane1.getAccessibleContext().setAccessibleName("Clientes");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tfCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCpfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCpfActionPerformed
+
+    private void tfEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfEnderecoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfEnderecoActionPerformed
+
+    private void tfCartaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCartaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfCartaoActionPerformed
+
+    private void tbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClientesMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbClientesMouseClicked
+
+    private void tbClientesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbClientesFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbClientesFocusGained
+
+    private void tbClientesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tbClientesFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbClientesFocusLost
+
+    private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tbClientes.getSelectedRow();
+        System.out.println(linhaSelecionada);
+        String cpf = (String) tbClientes.getValueAt(linhaSelecionada, 0);
+        
+        int confirmacao = JOptionPane.showConfirmDialog(null,"Deseja mesmo excluir o cpf: "+cpf+"?",
+          "Janela de confirmação",JOptionPane.YES_NO_OPTION);
+        
+        System.out.println(confirmacao);
+        
+        if (confirmacao == 0){
+            try {
+                ClienteDAO clienteDAO = new ClienteDAO();
+                clienteDAO.remove(cpf);
+                JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
+                buscarClientes();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
+    }//GEN-LAST:event_btRemoverActionPerformed
+
+    private void btImprimirClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btImprimirClientesActionPerformed
+
+    private void btInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ClienteDAO clienteDAO = new ClienteDAO();
+            Cliente cliente = new Cliente(tfCpf.getText(), tfNome.getText(), tfTelefone.getText(), tfEndereco.getText(), 
+                                            tfInstagram.getText(), tfFacebook.getText(), tfCartao.getText());
+            
+            clienteDAO.inserir(cliente);
+            
+            tfCpf.setText("");
+            tfNome.setText("");
+            tfTelefone.setText("");
+            tfEndereco.setText("");
+            tfInstagram.setText("");
+            tfFacebook.setText("");
+            tfCartao.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Cliente inserido com sucesso!");
+            buscarClientes();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_btInserirActionPerformed
+
+    private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tbClientes.getSelectedRow();
+        String cpf = (String) tbClientes.getValueAt(linhaSelecionada, 0);
+        String nome = (String) tbClientes.getValueAt(linhaSelecionada, 1);
+        String telefone = (String) tbClientes.getValueAt(linhaSelecionada, 2);
+        String endereco = (String) tbClientes.getValueAt(linhaSelecionada, 3);
+        String instagram = (String) tbClientes.getValueAt(linhaSelecionada, 4);
+        String facebook = (String) tbClientes.getValueAt(linhaSelecionada, 5);
+        String cartao = (String) tbClientes.getValueAt(linhaSelecionada, 6);
+        
+        tfCpf.setText(cpf);
+        tfCpf.setEditable(false);
+        tfNome.setText(nome);
+        tfTelefone.setText(telefone);
+        tfEndereco.setText(endereco);
+        tfInstagram.setText(instagram);
+        tfFacebook.setText(facebook);
+        tfCartao.setText(cartao);
+        
+        lpClientes.moveToFront(lpEditar);
+        lpClientes.moveToBack(lpAcoes);
+        lpEditar.setVisible(true);
+        lpAcoes.setVisible(false);        
+    }//GEN-LAST:event_btEditarActionPerformed
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        // TODO add your handling code here:
+        tfCpf.setText("");
+        tfCpf.setEditable(true);
+        tfNome.setText("");
+        tfTelefone.setText("");
+        tfEndereco.setText("");
+        tfInstagram.setText("");
+        tfFacebook.setText("");
+        tfCartao.setText("");
+        
+        lpClientes.moveToBack(lpEditar);
+        lpClientes.moveToFront(lpAcoes);
+        lpEditar.setVisible(false);
+        lpAcoes.setVisible(true);
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            ClienteDAO clienteDAO = new ClienteDAO();
+            Cliente cliente = new Cliente(tfCpf.getText(), tfNome.getText(), tfTelefone.getText(), tfEndereco.getText(), 
+                                            tfInstagram.getText(), tfFacebook.getText(), tfCartao.getText());
+            
+            clienteDAO.update(cliente);
+            
+            tfCpf.setText("");
+            tfNome.setText("");
+            tfTelefone.setText("");
+            tfEndereco.setText("");
+            tfInstagram.setText("");
+            tfFacebook.setText("");
+            tfCartao.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso!");
+            iniciarClientes();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_btSalvarActionPerformed
+
+    private void tfBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarActionPerformed
+
+    private void tfBuscarInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tfBuscarInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarInputMethodTextChanged
 
     /**
      * @param args the command line arguments
@@ -72,12 +606,142 @@ public class Menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                Menu menu = new Menu();
+                menu.setVisible(true);
+                menu.iniciarClientes();
             }
         });
     }
+    
+    public void montarTbClientes(ArrayList<Cliente> clientes){
+        DefaultTableModel model;
+        model = new DefaultTableModel(new String[] {"CPF", "Nome", "Telefone", "Endereço", "Instagram", "Facebook", "Cartão de Crédito"}, 0);
+
+        clientes.forEach((Cliente cliente) -> {
+            String cpf = cliente.getCpf();
+            String nome = cliente.getNome();
+            String telefone = cliente.getTelefone();
+            String endereco = cliente.getEndereco();
+            String instagram = cliente.getEndInstagram();
+            String facebook = cliente.getEndFacebook();
+            String cartao = cliente.getCartaoDeCredito();
+            Vector row = new Vector();
+            row.add(cpf);
+            row.add(nome);
+            row.add(telefone);
+            row.add(endereco);
+            row.add(instagram);
+            row.add(facebook);
+            row.add(cartao);
+            model.addRow(row);
+        });
+
+        tbClientes.setModel(model);
+        tbClientes.setDefaultEditor(Object.class, null);
+        tbClientes.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public ArrayList<Cliente> filtrarListaCliente(ArrayList<Cliente> clientes, String busca){
+        ArrayList<Cliente> clientesFiltrados = new ArrayList();
+        clientes.forEach((cliente) -> {
+            if (cliente.getCpf().contains(busca) || cliente.getNome().contains(busca) || busca == ""){
+                clientesFiltrados.add(cliente);
+            }
+        });
+        
+        return (clientesFiltrados);
+    }
+    
+    public void montarFiltro(ArrayList<Cliente> clientes){
+        tfBuscar.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    String busca = tfBuscar.getText();
+                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
+                    montarTbClientes(clientesFiltrados);
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    String busca = tfBuscar.getText();
+                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
+                    montarTbClientes(clientesFiltrados);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    String busca = tfBuscar.getText();
+                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
+                    montarTbClientes(clientesFiltrados);
+                }
+            });
+    }
+    
+    public void buscarClientes(){
+        try {
+            tbClientes.setAutoCreateRowSorter(true);
+            ArrayList<Cliente> clientes = new ArrayList();
+            ClienteDAO clienteDAO = new ClienteDAO();
+            
+            clientes = clienteDAO.get();
+            
+            montarTbClientes(clientes);
+            montarFiltro(clientes);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+    public void iniciarClientes(){
+        buscarClientes();
+        tfCpf.setEditable(true);
+        lpClientes.moveToFront(lpAcoes);
+        lpClientes.moveToBack(lpEditar);
+        lpEditar.setVisible(false);
+        lpAcoes.setVisible(true);
+
+//        btEditar.setEnabled(false);
+//        btRemover.setEnabled(false);      
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btEditar;
+    private javax.swing.JButton btImprimirClientes;
+    private javax.swing.JButton btInserir;
+    private javax.swing.JButton btRemover;
+    private javax.swing.JButton btSalvar;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lbCartao;
+    private javax.swing.JLabel lbCpf;
+    private javax.swing.JLabel lbEndereco;
+    private javax.swing.JLabel lbFacebook;
+    private javax.swing.JLabel lbInstagram;
+    private javax.swing.JLabel lbNome;
+    private javax.swing.JLabel lbTelefone;
+    private javax.swing.JPanel lpAcoes;
+    private javax.swing.JLayeredPane lpClientes;
+    private javax.swing.JPanel lpEditar;
+    private javax.swing.JPanel pnAcoesClientes;
+    private javax.swing.JPanel pnBuscar;
+    private javax.swing.JPanel pnClientes;
+    private javax.swing.JPanel pnContentClientes;
+    private javax.swing.JPanel pnPedidos;
+    private javax.swing.JPanel pnQueijos;
+    private javax.swing.JTable tbClientes;
+    private javax.swing.JTextField tfBuscar;
+    private javax.swing.JTextField tfCartao;
+    private javax.swing.JTextField tfCpf;
+    private javax.swing.JTextField tfEndereco;
+    private javax.swing.JTextField tfFacebook;
+    private javax.swing.JTextField tfInstagram;
+    private javax.swing.JTextField tfNome;
+    private javax.swing.JTextField tfTelefone;
     // End of variables declaration//GEN-END:variables
 
 }

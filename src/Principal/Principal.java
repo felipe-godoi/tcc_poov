@@ -5,9 +5,12 @@
  */
 package Principal;
 
+import Interfaces.Menu;
+
 public class Principal {
 
     public static void main(String[] args) {
+        Menu.main(args);
         
     }
     
