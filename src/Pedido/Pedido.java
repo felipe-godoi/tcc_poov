@@ -16,17 +16,27 @@ public class Pedido {
     private LocalDateTime data;
     private LocalDateTime prazoParaEntrega;
     private String cpfCliente;
+    private String nomeCliente;
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
 
     @Override
     public String toString() {
-        return "Pedido{" + "Id=" + Id + ", data=" + data + ", prazoParaEntrega=" + prazoParaEntrega + ", cpfCliente=" + cpfCliente + '}';
+        return "Pedido{" + "Id=" + Id + ", data=" + data + ", prazoParaEntrega=" + prazoParaEntrega + ", cpfCliente=" + cpfCliente + ", nomeCliente=" + nomeCliente + '}';
     }
 
-    public Pedido(int Id, LocalDateTime data, LocalDateTime prazoParaEntrega, String cpfCliente) {
+    public Pedido(int Id, LocalDateTime data, LocalDateTime prazoParaEntrega, String cpfCliente, String nomeCliente) {
         this.Id = Id;
         this.data = data;
         this.prazoParaEntrega = prazoParaEntrega;
         this.cpfCliente = cpfCliente;
+        this.nomeCliente = nomeCliente;
     }
 
     public int getId() {

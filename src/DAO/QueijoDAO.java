@@ -52,8 +52,10 @@ public class QueijoDAO {
             pstm.setString(3,queijo.getTipoDoQueijo());
             pstm.setFloat(4, queijo.getTemperaturaIdeal());
             pstm.setFloat(5, queijo.getId());
+            System.out.println(pstm.toString());
             pstm.execute();
             pstm.close();
+            
         } catch (SQLException e) {
             System.out.println("Connection failure.");
         }
@@ -109,9 +111,9 @@ public class QueijoDAO {
         }
     }
     
-    public Queijo getMaisCaro(String nome){
+    public Queijo getMaisCaro(){
         try {            
-            String sql = "SELECT * FROM QUEIJOS ORDER BY(valorPorKg) DESC LIMIT(1)";
+            String sql = "SELECT * FROM QUEIJOS ORDER BY(valorPorKg) DESC LIMIT 1";
             
             try (Statement statement = this.connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -125,9 +127,9 @@ public class QueijoDAO {
         }
     }
     
-    public Queijo getMenorTemperatura(String nome){
+    public Queijo getMenorTemperatura(){
         try {            
-            String sql = "SELECT * FROM QUEIJOS ORDER BY(temperaturaIdeal) ASC LIMIT(1)";
+            String sql = "SELECT * FROM QUEIJOS ORDER BY(temperaturaIdeal) ASC LIMIT 1;";
             
             try (Statement statement = this.connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);

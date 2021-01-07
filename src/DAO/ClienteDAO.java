@@ -37,6 +37,7 @@ public class ClienteDAO {
                 pstm.setString(7, cliente.getCartaoDeCredito());
                 
                 pstm.execute();
+                pstm.close();
             }
             
             System.out.println("Cliente adicionado!");

@@ -43,8 +43,8 @@ public class PedidoDAO {
         try{
             String sql = "insert into PEDIDOS(data, prazoParaEntrega, fk_cpf)values(?,?,?)";
             try (PreparedStatement pstm = this.connection.prepareStatement(sql)) {
-                pstm.setDate(1, convertLocalDateTimeToDate(pedido.getData()));
-                pstm.setDate(2, convertLocalDateTimeToDate(pedido.getPrazoParaEntrega()));
+                pstm.setDate(1, Date.valueOf(pedido.getData().toLocalDate()));
+                pstm.setDate(2, Date.valueOf(pedido.getPrazoParaEntrega().toLocalDate()));
                 pstm.setString(3, pedido.getCpfCliente());
                 
                 pstm.execute();
@@ -89,13 +89,14 @@ public class PedidoDAO {
     public ArrayList<Pedido> get(){
         ArrayList<Pedido> pedidos = new ArrayList();
         try {            
-            String sql = "SELECT * FROM PEDIDOS";
+            String sql = "SELECT p.*, c.nome FROM PEDIDOS p inner join CLIENTES c on p.fk_cpf=c.cpf;";
             try (Statement statement = this.connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                 
                 while (resultSet.next()) {
                     Pedido pedido;
-                    pedido = new Pedido(resultSet.getInt("id_pedido"), convertDateToLocalDateTime(resultSet.getDate("data")), convertDateToLocalDateTime(resultSet.getDate("prazoParaEntrega")), resultSet.getString("fk_cpf"));
+                    pedido = new Pedido(resultSet.getInt("id_pedido"), LocalDateTime.parse(resultSet.getDate("data").toString() + " 00:00", formatter), LocalDateTime.parse(resultSet.getDate("prazoParaEntrega").toString() + " 00:00", formatter), resultSet.getString("fk_cpf"), resultSet.getString("nome"));
                     pedidos.add(pedido);
                 }
             }
@@ -107,30 +108,14 @@ public class PedidoDAO {
         return (pedidos);
     }
     
-    public Pedido getOne(int id){
+    public Pedido getMaisAntigo(String cpf){
         try {            
-            String sql = "SELECT * FROM PEDIDOS where id_pedido='"+id+"'";
+            String sql = "SELECT * FROM PEDIDOS p inner join CLIENTES c on p.fk_cpf=c.cpf ORDER BY(data) DESC LIMIT(1) where c.cpf='"+cpf+"'";
             
             try (Statement statement = this.connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);
                 resultSet.next();
-                Pedido pedido = new Pedido(resultSet.getInt("id_pedido"), convertDateToLocalDateTime(resultSet.getDate("data")), convertDateToLocalDateTime(resultSet.getDate("prazoParaEntrega")), resultSet.getString("fk_cpf"));
-                return (pedido);
-            }
-        } catch (SQLException e) {
-            System.out.println("Connection failure.");
-            return (null);
-        }
-    }
-    
-    public Pedido getMaisAntigo(String nome){
-        try {            
-            String sql = "SELECT * FROM PEDIDOS ORDER BY(data) DESC LIMIT(1)";
-            
-            try (Statement statement = this.connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(sql);
-                resultSet.next();
-                Pedido pedido = new Pedido(resultSet.getInt("id_pedido"), convertDateToLocalDateTime(resultSet.getDate("data")), convertDateToLocalDateTime(resultSet.getDate("prazoParaEntrega")), resultSet.getString("fk_cpf"));
+                Pedido pedido = new Pedido(resultSet.getInt("id_pedido"), convertDateToLocalDateTime(resultSet.getDate("data")), convertDateToLocalDateTime(resultSet.getDate("prazoParaEntrega")), resultSet.getString("fk_cpf"), resultSet.getString("nome"));
                 return (pedido);
             }
         } catch (SQLException e) {

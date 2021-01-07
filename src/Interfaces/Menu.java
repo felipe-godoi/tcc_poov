@@ -8,7 +8,17 @@ package Interfaces;
 
 import Cliente.Cliente;
 import DAO.ClienteDAO;
+import DAO.PedidoDAO;
+import DAO.QueijoDAO;
+import Models.ClientesModel;
+import Models.PedidosModel;
+import Models.QueijosModel;
+import Pedido.Pedido;
+import Queijo.Queijo;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -18,6 +28,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -42,9 +53,9 @@ public class Menu extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnClientes = new javax.swing.JPanel();
         pnContentClientes = new javax.swing.JPanel();
-        pnBuscar = new javax.swing.JPanel();
-        tfBuscar = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        pnBuscarClientes = new javax.swing.JPanel();
+        tfBuscarCliente = new javax.swing.JTextField();
+        lbBuscarCliente = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jScrollPane1 = new javax.swing.JScrollPane();
         tbClientes = new javax.swing.JTable();
@@ -64,62 +75,122 @@ public class Menu extends javax.swing.JFrame {
         lbCartao = new javax.swing.JLabel();
         tfCartao = new javax.swing.JTextField();
         lpClientes = new javax.swing.JLayeredPane();
-        lpAcoes = new javax.swing.JPanel();
-        btInserir = new javax.swing.JButton();
-        btRemover = new javax.swing.JButton();
-        btEditar = new javax.swing.JButton();
+        lpAcoesClientes = new javax.swing.JPanel();
+        btInserirClientes = new javax.swing.JButton();
+        btRemoverClientes = new javax.swing.JButton();
+        btEditarClientes = new javax.swing.JButton();
         btImprimirClientes = new javax.swing.JButton();
-        lpEditar = new javax.swing.JPanel();
-        btCancelar = new javax.swing.JButton();
-        btSalvar = new javax.swing.JButton();
+        lpEditarClientes = new javax.swing.JPanel();
+        btCancelarClientes = new javax.swing.JButton();
+        btSalvarClientes = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         pnQueijos = new javax.swing.JPanel();
+        pnContentQueijos = new javax.swing.JPanel();
+        pnBuscarQueijos = new javax.swing.JPanel();
+        tfBuscarQueijos = new javax.swing.JTextField();
+        lbBuscarQueijos = new javax.swing.JLabel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbQueijos = new javax.swing.JTable();
+        pnAcoesClientes1 = new javax.swing.JPanel();
+        tfPeso = new javax.swing.JTextField();
+        lbPeso = new javax.swing.JLabel();
+        lbValorKg = new javax.swing.JLabel();
+        tfValorKg = new javax.swing.JTextField();
+        lbTipoQueijo = new javax.swing.JLabel();
+        lbTemperatura = new javax.swing.JLabel();
+        tfTemperatura = new javax.swing.JTextField();
+        tfTipoQueijo = new javax.swing.JTextField();
+        lpQueijos = new javax.swing.JLayeredPane();
+        lpAcoesQueijos = new javax.swing.JPanel();
+        btInserirQueijos = new javax.swing.JButton();
+        btRemoverQueijos = new javax.swing.JButton();
+        btEditarQueijos = new javax.swing.JButton();
+        btImprimirQueijos = new javax.swing.JButton();
+        lpEditarQueijos = new javax.swing.JPanel();
+        btCancelarQueijos = new javax.swing.JButton();
+        btSalvarQueijos = new javax.swing.JButton();
+        lbLabelMaisCaro = new javax.swing.JLabel();
+        lbLabelMenorTemperatura = new javax.swing.JLabel();
+        lbMaisCaro = new javax.swing.JLabel();
+        lbMenorTemperatura = new javax.swing.JLabel();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
         pnPedidos = new javax.swing.JPanel();
+        pnContentPedidos = new javax.swing.JPanel();
+        pnBuscarPedidos = new javax.swing.JPanel();
+        tfBuscarPedidos = new javax.swing.JTextField();
+        lbBuscarPedidos = new javax.swing.JLabel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbPedidos = new javax.swing.JTable();
+        pnAcoesPedidos = new javax.swing.JPanel();
+        tfIdPedido = new javax.swing.JTextField();
+        lbIdPedido = new javax.swing.JLabel();
+        lbIdCliente = new javax.swing.JLabel();
+        lbData = new javax.swing.JLabel();
+        lbPrazo = new javax.swing.JLabel();
+        lpPedidos = new javax.swing.JLayeredPane();
+        lpAcoesPedidos = new javax.swing.JPanel();
+        btInserirPedidos = new javax.swing.JButton();
+        btRemoverPedidos = new javax.swing.JButton();
+        btEditarPedidos = new javax.swing.JButton();
+        btImprimirPedidos = new javax.swing.JButton();
+        lpEditarPedidos = new javax.swing.JPanel();
+        btCancelarPedidos = new javax.swing.JButton();
+        btSalvarPedidos = new javax.swing.JButton();
+        ftData = new javax.swing.JFormattedTextField();
+        ftPrazo = new javax.swing.JFormattedTextField();
+        jcPedidos = new javax.swing.JComboBox<>();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         pnContentClientes.setLayout(new javax.swing.BoxLayout(pnContentClientes, javax.swing.BoxLayout.Y_AXIS));
 
-        pnBuscar.setMaximumSize(new java.awt.Dimension(32767, 5));
-        pnBuscar.setMinimumSize(new java.awt.Dimension(100, 5));
+        pnBuscarClientes.setMaximumSize(new java.awt.Dimension(32767, 5));
+        pnBuscarClientes.setMinimumSize(new java.awt.Dimension(100, 5));
 
-        tfBuscar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tfBuscar.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        tfBuscarCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfBuscarCliente.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                tfBuscarInputMethodTextChanged(evt);
+                tfBuscarClienteInputMethodTextChanged(evt);
             }
         });
-        tfBuscar.addActionListener(new java.awt.event.ActionListener() {
+        tfBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfBuscarActionPerformed(evt);
+                tfBuscarClienteActionPerformed(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Digite um CPF ou Nome para buscar");
+        lbBuscarCliente.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbBuscarCliente.setText("Digite um CPF ou Nome para buscar");
 
-        javax.swing.GroupLayout pnBuscarLayout = new javax.swing.GroupLayout(pnBuscar);
-        pnBuscar.setLayout(pnBuscarLayout);
-        pnBuscarLayout.setHorizontalGroup(
-            pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnBuscarLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnBuscarClientesLayout = new javax.swing.GroupLayout(pnBuscarClientes);
+        pnBuscarClientes.setLayout(pnBuscarClientesLayout);
+        pnBuscarClientesLayout.setHorizontalGroup(
+            pnBuscarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnBuscarClientesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lbBuscarCliente)
                 .addGap(18, 18, 18)
-                .addComponent(tfBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE))
+                .addComponent(tfBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE))
         );
-        pnBuscarLayout.setVerticalGroup(
-            pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnBuscarLayout.createSequentialGroup()
+        pnBuscarClientesLayout.setVerticalGroup(
+            pnBuscarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnBuscarClientesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnBuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(jLabel1)))
+                .addGroup(pnBuscarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(lbBuscarCliente)))
         );
 
-        pnContentClientes.add(pnBuscar);
+        pnContentClientes.add(pnBuscarClientes);
         pnContentClientes.add(filler1);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -206,27 +277,27 @@ public class Menu extends javax.swing.JFrame {
 
         lpClientes.setLayout(new javax.swing.OverlayLayout(lpClientes));
 
-        btInserir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btInserir.setText("Inserir");
-        btInserir.addActionListener(new java.awt.event.ActionListener() {
+        btInserirClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btInserirClientes.setText("Inserir");
+        btInserirClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btInserirActionPerformed(evt);
+                btInserirClientesActionPerformed(evt);
             }
         });
 
-        btRemover.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btRemover.setText("Remover");
-        btRemover.addActionListener(new java.awt.event.ActionListener() {
+        btRemoverClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btRemoverClientes.setText("Remover");
+        btRemoverClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btRemoverActionPerformed(evt);
+                btRemoverClientesActionPerformed(evt);
             }
         });
 
-        btEditar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btEditar.setText("Editar");
-        btEditar.addActionListener(new java.awt.event.ActionListener() {
+        btEditarClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btEditarClientes.setText("Editar");
+        btEditarClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btEditarActionPerformed(evt);
+                btEditarClientesActionPerformed(evt);
             }
         });
 
@@ -238,89 +309,94 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout lpAcoesLayout = new javax.swing.GroupLayout(lpAcoes);
-        lpAcoes.setLayout(lpAcoesLayout);
-        lpAcoesLayout.setHorizontalGroup(
-            lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpAcoesLayout.createSequentialGroup()
+        javax.swing.GroupLayout lpAcoesClientesLayout = new javax.swing.GroupLayout(lpAcoesClientes);
+        lpAcoesClientes.setLayout(lpAcoesClientesLayout);
+        lpAcoesClientesLayout.setHorizontalGroup(
+            lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpAcoesClientesLayout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btInserir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btRemover, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btInserirClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btRemoverClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(8, 8, 8)
-                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btImprimirClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                    .addComponent(btEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btEditarClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        lpAcoesLayout.setVerticalGroup(
-            lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lpAcoesLayout.createSequentialGroup()
-                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+        lpAcoesClientesLayout.setVerticalGroup(
+            lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpAcoesClientesLayout.createSequentialGroup()
+                .addGroup(lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btInserirClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEditarClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(lpAcoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(lpAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btRemoverClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btImprimirClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
-        lpClientes.add(lpAcoes);
+        lpClientes.add(lpAcoesClientes);
 
-        btCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btCancelar.setText("Cancelar");
-        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+        btCancelarClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btCancelarClientes.setText("Cancelar");
+        btCancelarClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCancelarActionPerformed(evt);
+                btCancelarClientesActionPerformed(evt);
             }
         });
 
-        btSalvar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btSalvar.setText("Salvar");
-        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btSalvarClientes.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btSalvarClientes.setText("Salvar");
+        btSalvarClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btSalvarActionPerformed(evt);
+                btSalvarClientesActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout lpEditarLayout = new javax.swing.GroupLayout(lpEditar);
-        lpEditar.setLayout(lpEditarLayout);
-        lpEditarLayout.setHorizontalGroup(
-            lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lpEditarLayout.createSequentialGroup()
+        javax.swing.GroupLayout lpEditarClientesLayout = new javax.swing.GroupLayout(lpEditarClientes);
+        lpEditarClientes.setLayout(lpEditarClientesLayout);
+        lpEditarClientesLayout.setHorizontalGroup(
+            lpEditarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpEditarClientesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btCancelarClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btSalvarClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
-        lpEditarLayout.setVerticalGroup(
-            lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpEditarLayout.createSequentialGroup()
+        lpEditarClientesLayout.setVerticalGroup(
+            lpEditarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpEditarClientesLayout.createSequentialGroup()
                 .addContainerGap(51, Short.MAX_VALUE)
-                .addGroup(lpEditarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btCancelar)
-                    .addComponent(btSalvar))
+                .addGroup(lpEditarClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCancelarClientes)
+                    .addComponent(btSalvarClientes))
                 .addGap(46, 46, 46))
         );
 
-        lpClientes.add(lpEditar);
+        lpClientes.add(lpEditarClientes);
 
         javax.swing.GroupLayout pnAcoesClientesLayout = new javax.swing.GroupLayout(pnAcoesClientes);
         pnAcoesClientes.setLayout(pnAcoesClientesLayout);
         pnAcoesClientesLayout.setHorizontalGroup(
             pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientesLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
                 .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTelefone)
-                    .addComponent(lbNome)
-                    .addComponent(lbCpf)
-                    .addComponent(lbCartao))
-                .addGap(18, 18, 18)
+                    .addGroup(pnAcoesClientesLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTelefone)
+                            .addComponent(lbNome)
+                            .addComponent(lbCpf))
+                        .addGap(85, 85, 85))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbCartao)
+                        .addGap(18, 18, 18)))
                 .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tfCartao, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                    .addComponent(tfCartao, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                     .addComponent(tfNome, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfTelefone, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfCpf, javax.swing.GroupLayout.Alignment.LEADING))
@@ -329,7 +405,7 @@ public class Menu extends javax.swing.JFrame {
                     .addComponent(lbFacebook)
                     .addComponent(lbInstagram)
                     .addComponent(lbEndereco))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tfInstagram, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                     .addComponent(tfEndereco)
@@ -371,13 +447,14 @@ public class Menu extends javax.swing.JFrame {
                                     .addComponent(tfFacebook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbFacebook))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnAcoesClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfCartao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbCartao))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnContentClientes.add(pnAcoesClientes);
+        pnContentClientes.add(filler5);
 
         javax.swing.GroupLayout pnClientesLayout = new javax.swing.GroupLayout(pnClientes);
         pnClientes.setLayout(pnClientesLayout);
@@ -392,34 +469,579 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Clientes", pnClientes);
 
+        pnContentQueijos.setLayout(new javax.swing.BoxLayout(pnContentQueijos, javax.swing.BoxLayout.Y_AXIS));
+
+        pnBuscarQueijos.setMaximumSize(new java.awt.Dimension(32767, 5));
+        pnBuscarQueijos.setMinimumSize(new java.awt.Dimension(100, 5));
+
+        tfBuscarQueijos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfBuscarQueijos.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                tfBuscarQueijosInputMethodTextChanged(evt);
+            }
+        });
+        tfBuscarQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarQueijosActionPerformed(evt);
+            }
+        });
+
+        lbBuscarQueijos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbBuscarQueijos.setText("Digite o tipo do queijo para buscar");
+
+        javax.swing.GroupLayout pnBuscarQueijosLayout = new javax.swing.GroupLayout(pnBuscarQueijos);
+        pnBuscarQueijos.setLayout(pnBuscarQueijosLayout);
+        pnBuscarQueijosLayout.setHorizontalGroup(
+            pnBuscarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnBuscarQueijosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbBuscarQueijos)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscarQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE))
+        );
+        pnBuscarQueijosLayout.setVerticalGroup(
+            pnBuscarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnBuscarQueijosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnBuscarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfBuscarQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(lbBuscarQueijos)))
+        );
+
+        pnContentQueijos.add(pnBuscarQueijos);
+        pnContentQueijos.add(filler2);
+
+        tbQueijos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbQueijos);
+
+        pnContentQueijos.add(jScrollPane2);
+
+        pnAcoesClientes1.setMinimumSize(new java.awt.Dimension(100, 80));
+
+        tfPeso.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfPeso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfPesoActionPerformed(evt);
+            }
+        });
+
+        lbPeso.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbPeso.setText("Peso");
+
+        lbValorKg.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbValorKg.setText("Valor por Kg");
+
+        tfValorKg.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbTipoQueijo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbTipoQueijo.setText("Tipo do Queijo");
+
+        lbTemperatura.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbTemperatura.setText("Temperatura Ideal");
+
+        tfTemperatura.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        tfTipoQueijo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfTipoQueijo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTipoQueijoActionPerformed(evt);
+            }
+        });
+
+        lpQueijos.setLayout(new javax.swing.OverlayLayout(lpQueijos));
+
+        btInserirQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btInserirQueijos.setText("Inserir");
+        btInserirQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btInserirQueijosActionPerformed(evt);
+            }
+        });
+
+        btRemoverQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btRemoverQueijos.setText("Remover");
+        btRemoverQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverQueijosActionPerformed(evt);
+            }
+        });
+
+        btEditarQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btEditarQueijos.setText("Editar");
+        btEditarQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEditarQueijosActionPerformed(evt);
+            }
+        });
+
+        btImprimirQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btImprimirQueijos.setText("Imprimir");
+        btImprimirQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirQueijosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpAcoesQueijosLayout = new javax.swing.GroupLayout(lpAcoesQueijos);
+        lpAcoesQueijos.setLayout(lpAcoesQueijosLayout);
+        lpAcoesQueijosLayout.setHorizontalGroup(
+            lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpAcoesQueijosLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btInserirQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btRemoverQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addGroup(lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btImprimirQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btEditarQueijos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        lpAcoesQueijosLayout.setVerticalGroup(
+            lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpAcoesQueijosLayout.createSequentialGroup()
+                .addGroup(lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btInserirQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEditarQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(lpAcoesQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btRemoverQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimirQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 13, Short.MAX_VALUE))
+        );
+
+        lpQueijos.add(lpAcoesQueijos);
+
+        btCancelarQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btCancelarQueijos.setText("Cancelar");
+        btCancelarQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarQueijosActionPerformed(evt);
+            }
+        });
+
+        btSalvarQueijos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btSalvarQueijos.setText("Salvar");
+        btSalvarQueijos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarQueijosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpEditarQueijosLayout = new javax.swing.GroupLayout(lpEditarQueijos);
+        lpEditarQueijos.setLayout(lpEditarQueijosLayout);
+        lpEditarQueijosLayout.setHorizontalGroup(
+            lpEditarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpEditarQueijosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btCancelarQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btSalvarQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        lpEditarQueijosLayout.setVerticalGroup(
+            lpEditarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpEditarQueijosLayout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(lpEditarQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCancelarQueijos)
+                    .addComponent(btSalvarQueijos))
+                .addGap(46, 46, 46))
+        );
+
+        lpQueijos.add(lpEditarQueijos);
+
+        lbLabelMaisCaro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbLabelMaisCaro.setText("Queijo mais caro:");
+
+        lbLabelMenorTemperatura.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbLabelMenorTemperatura.setText("Queijo menor temperatura:");
+
+        lbMaisCaro.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        lbMenorTemperatura.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout pnAcoesClientes1Layout = new javax.swing.GroupLayout(pnAcoesClientes1);
+        pnAcoesClientes1.setLayout(pnAcoesClientes1Layout);
+        pnAcoesClientes1Layout.setHorizontalGroup(
+            pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientes1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbValorKg)
+                            .addComponent(lbPeso))
+                        .addGap(54, 54, 54)
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tfValorKg, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                            .addComponent(tfPeso, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(61, 61, 61))
+                    .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                        .addComponent(lbLabelMaisCaro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbMaisCaro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTemperatura)
+                            .addComponent(lbTipoQueijo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfTemperatura, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                            .addComponent(tfTipoQueijo))
+                        .addGap(12, 12, 12))
+                    .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                        .addComponent(lbLabelMenorTemperatura)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbMenorTemperatura)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(lpQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+        );
+        pnAcoesClientes1Layout.setVerticalGroup(
+            pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lpQueijos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbPeso))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfValorKg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbValorKg)))
+                            .addGroup(pnAcoesClientes1Layout.createSequentialGroup()
+                                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfTipoQueijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbTipoQueijo))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(tfTemperatura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lbTemperatura))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbLabelMenorTemperatura)
+                                .addComponent(lbMenorTemperatura))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesClientes1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbLabelMaisCaro)
+                                .addComponent(lbMaisCaro)))))
+                .addContainerGap(4, Short.MAX_VALUE))
+        );
+
+        pnContentQueijos.add(pnAcoesClientes1);
+        pnContentQueijos.add(filler6);
+
         javax.swing.GroupLayout pnQueijosLayout = new javax.swing.GroupLayout(pnQueijos);
         pnQueijos.setLayout(pnQueijosLayout);
         pnQueijosLayout.setHorizontalGroup(
             pnQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1072, Short.MAX_VALUE)
+            .addComponent(pnContentQueijos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnQueijosLayout.setVerticalGroup(
             pnQueijosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 611, Short.MAX_VALUE)
+            .addComponent(pnContentQueijos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Queijos", pnQueijos);
+
+        pnContentPedidos.setLayout(new javax.swing.BoxLayout(pnContentPedidos, javax.swing.BoxLayout.Y_AXIS));
+
+        pnBuscarPedidos.setMaximumSize(new java.awt.Dimension(32767, 5));
+        pnBuscarPedidos.setMinimumSize(new java.awt.Dimension(100, 5));
+
+        tfBuscarPedidos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tfBuscarPedidos.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                tfBuscarPedidosInputMethodTextChanged(evt);
+            }
+        });
+        tfBuscarPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfBuscarPedidosActionPerformed(evt);
+            }
+        });
+
+        lbBuscarPedidos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbBuscarPedidos.setText("Digite o número do pedido para buscar");
+
+        javax.swing.GroupLayout pnBuscarPedidosLayout = new javax.swing.GroupLayout(pnBuscarPedidos);
+        pnBuscarPedidos.setLayout(pnBuscarPedidosLayout);
+        pnBuscarPedidosLayout.setHorizontalGroup(
+            pnBuscarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnBuscarPedidosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbBuscarPedidos)
+                .addGap(18, 18, 18)
+                .addComponent(tfBuscarPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE))
+        );
+        pnBuscarPedidosLayout.setVerticalGroup(
+            pnBuscarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnBuscarPedidosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnBuscarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfBuscarPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(lbBuscarPedidos)))
+        );
+
+        pnContentPedidos.add(pnBuscarPedidos);
+        pnContentPedidos.add(filler3);
+
+        tbPedidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tbPedidos);
+
+        pnContentPedidos.add(jScrollPane3);
+
+        pnAcoesPedidos.setMinimumSize(new java.awt.Dimension(100, 80));
+
+        tfIdPedido.setEditable(false);
+        tfIdPedido.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        tfIdPedido.setEnabled(false);
+        tfIdPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfIdPedidoActionPerformed(evt);
+            }
+        });
+
+        lbIdPedido.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbIdPedido.setText("IdPedido");
+
+        lbIdCliente.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbIdCliente.setText("IdCliente");
+
+        lbData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbData.setText("Data");
+
+        lbPrazo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbPrazo.setText("Prazo");
+
+        lpPedidos.setLayout(new javax.swing.OverlayLayout(lpPedidos));
+
+        btInserirPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btInserirPedidos.setText("Inserir");
+        btInserirPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btInserirPedidosActionPerformed(evt);
+            }
+        });
+
+        btRemoverPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btRemoverPedidos.setText("Remover");
+        btRemoverPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btRemoverPedidosActionPerformed(evt);
+            }
+        });
+
+        btEditarPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btEditarPedidos.setText("Editar");
+        btEditarPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEditarPedidosActionPerformed(evt);
+            }
+        });
+
+        btImprimirPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btImprimirPedidos.setText("Imprimir");
+        btImprimirPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirPedidosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpAcoesPedidosLayout = new javax.swing.GroupLayout(lpAcoesPedidos);
+        lpAcoesPedidos.setLayout(lpAcoesPedidosLayout);
+        lpAcoesPedidosLayout.setHorizontalGroup(
+            lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpAcoesPedidosLayout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addGroup(lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btInserirPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btRemoverPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(8, 8, 8)
+                .addGroup(lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btImprimirPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(btEditarPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        lpAcoesPedidosLayout.setVerticalGroup(
+            lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpAcoesPedidosLayout.createSequentialGroup()
+                .addGroup(lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btInserirPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btEditarPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(lpAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btRemoverPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimirPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 13, Short.MAX_VALUE))
+        );
+
+        lpPedidos.add(lpAcoesPedidos);
+
+        btCancelarPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btCancelarPedidos.setText("Cancelar");
+        btCancelarPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarPedidosActionPerformed(evt);
+            }
+        });
+
+        btSalvarPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btSalvarPedidos.setText("Salvar");
+        btSalvarPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarPedidosActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout lpEditarPedidosLayout = new javax.swing.GroupLayout(lpEditarPedidos);
+        lpEditarPedidos.setLayout(lpEditarPedidosLayout);
+        lpEditarPedidosLayout.setHorizontalGroup(
+            lpEditarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpEditarPedidosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btCancelarPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btSalvarPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        lpEditarPedidosLayout.setVerticalGroup(
+            lpEditarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lpEditarPedidosLayout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addGroup(lpEditarPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCancelarPedidos)
+                    .addComponent(btSalvarPedidos))
+                .addGap(46, 46, 46))
+        );
+
+        lpPedidos.add(lpEditarPedidos);
+
+        ftData.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ftData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ftDataActionPerformed(evt);
+            }
+        });
+
+        ftPrazo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ftPrazo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ftPrazoActionPerformed(evt);
+            }
+        });
+
+        jcPedidos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jcPedidos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout pnAcoesPedidosLayout = new javax.swing.GroupLayout(pnAcoesPedidos);
+        pnAcoesPedidos.setLayout(pnAcoesPedidosLayout);
+        pnAcoesPedidosLayout.setHorizontalGroup(
+            pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnAcoesPedidosLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbIdCliente)
+                    .addComponent(lbIdPedido))
+                .addGap(54, 54, 54)
+                .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfIdPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                    .addComponent(jcPedidos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(61, 61, 61)
+                .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbPrazo)
+                    .addComponent(lbData))
+                .addGap(72, 72, 72)
+                .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ftData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftPrazo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(lpPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
+        );
+        pnAcoesPedidosLayout.setVerticalGroup(
+            pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnAcoesPedidosLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lpPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnAcoesPedidosLayout.createSequentialGroup()
+                            .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(tfIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbIdPedido))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbIdCliente)
+                                .addComponent(jcPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(pnAcoesPedidosLayout.createSequentialGroup()
+                            .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbData)
+                                .addComponent(ftData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(pnAcoesPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbPrazo)
+                                .addComponent(ftPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(4, Short.MAX_VALUE))
+        );
+
+        pnContentPedidos.add(pnAcoesPedidos);
+        pnContentPedidos.add(filler7);
 
         javax.swing.GroupLayout pnPedidosLayout = new javax.swing.GroupLayout(pnPedidos);
         pnPedidos.setLayout(pnPedidosLayout);
         pnPedidosLayout.setHorizontalGroup(
             pnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1072, Short.MAX_VALUE)
+            .addComponent(pnContentPedidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnPedidosLayout.setVerticalGroup(
             pnPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 611, Short.MAX_VALUE)
+            .addComponent(pnContentPedidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Pedidos", pnPedidos);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.getAccessibleContext().setAccessibleName("Clientes");
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -448,7 +1070,7 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tbClientesFocusLost
 
-    private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
+    private void btRemoverClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverClientesActionPerformed
         // TODO add your handling code here:
         int linhaSelecionada = tbClientes.getSelectedRow();
         System.out.println(linhaSelecionada);
@@ -469,13 +1091,13 @@ public class Menu extends javax.swing.JFrame {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }   
         }
-    }//GEN-LAST:event_btRemoverActionPerformed
+    }//GEN-LAST:event_btRemoverClientesActionPerformed
 
     private void btImprimirClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirClientesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btImprimirClientesActionPerformed
 
-    private void btInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirActionPerformed
+    private void btInserirClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirClientesActionPerformed
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
@@ -498,9 +1120,9 @@ public class Menu extends javax.swing.JFrame {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         } 
-    }//GEN-LAST:event_btInserirActionPerformed
+    }//GEN-LAST:event_btInserirClientesActionPerformed
 
-    private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
+    private void btEditarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarClientesActionPerformed
         // TODO add your handling code here:
         int linhaSelecionada = tbClientes.getSelectedRow();
         String cpf = (String) tbClientes.getValueAt(linhaSelecionada, 0);
@@ -520,13 +1142,13 @@ public class Menu extends javax.swing.JFrame {
         tfFacebook.setText(facebook);
         tfCartao.setText(cartao);
         
-        lpClientes.moveToFront(lpEditar);
-        lpClientes.moveToBack(lpAcoes);
-        lpEditar.setVisible(true);
-        lpAcoes.setVisible(false);        
-    }//GEN-LAST:event_btEditarActionPerformed
+        lpClientes.moveToFront(lpEditarClientes);
+        lpClientes.moveToBack(lpAcoesClientes);
+        lpEditarClientes.setVisible(true);
+        lpAcoesClientes.setVisible(false);        
+    }//GEN-LAST:event_btEditarClientesActionPerformed
 
-    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+    private void btCancelarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarClientesActionPerformed
         // TODO add your handling code here:
         tfCpf.setText("");
         tfCpf.setEditable(true);
@@ -537,13 +1159,13 @@ public class Menu extends javax.swing.JFrame {
         tfFacebook.setText("");
         tfCartao.setText("");
         
-        lpClientes.moveToBack(lpEditar);
-        lpClientes.moveToFront(lpAcoes);
-        lpEditar.setVisible(false);
-        lpAcoes.setVisible(true);
-    }//GEN-LAST:event_btCancelarActionPerformed
+        lpClientes.moveToBack(lpEditarClientes);
+        lpClientes.moveToFront(lpAcoesClientes);
+        lpEditarClientes.setVisible(false);
+        lpAcoesClientes.setVisible(true);
+    }//GEN-LAST:event_btCancelarClientesActionPerformed
 
-    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+    private void btSalvarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarClientesActionPerformed
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
@@ -566,15 +1188,222 @@ public class Menu extends javax.swing.JFrame {
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         } 
-    }//GEN-LAST:event_btSalvarActionPerformed
+    }//GEN-LAST:event_btSalvarClientesActionPerformed
 
-    private void tfBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarActionPerformed
+    private void tfBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfBuscarActionPerformed
+    }//GEN-LAST:event_tfBuscarClienteActionPerformed
 
-    private void tfBuscarInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tfBuscarInputMethodTextChanged
+    private void tfBuscarClienteInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tfBuscarClienteInputMethodTextChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfBuscarInputMethodTextChanged
+    }//GEN-LAST:event_tfBuscarClienteInputMethodTextChanged
+
+    private void tfBuscarQueijosInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tfBuscarQueijosInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarQueijosInputMethodTextChanged
+
+    private void tfBuscarQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarQueijosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarQueijosActionPerformed
+
+    private void tfPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPesoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfPesoActionPerformed
+
+    private void tfTipoQueijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTipoQueijoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfTipoQueijoActionPerformed
+
+    private void btInserirQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirQueijosActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            QueijoDAO queijoDAO = new QueijoDAO();
+            Queijo queijo = new Queijo(0, Float.parseFloat(tfPeso.getText()), Float.parseFloat(tfValorKg.getText()), tfTipoQueijo.getText(), 
+                                            Float.parseFloat(tfTemperatura.getText()));
+            
+            queijoDAO.inserir(queijo);
+            
+            tfPeso.setText("");
+            tfValorKg.setText("");
+            tfTipoQueijo.setText("");
+            tfTemperatura.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Queijo inserido com sucesso!");
+            buscarQueijos();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_btInserirQueijosActionPerformed
+
+    private void btRemoverQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverQueijosActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tbQueijos.getSelectedRow();
+        System.out.println(linhaSelecionada);
+        int id = (int) tbQueijos.getValueAt(linhaSelecionada, 0);
+        String tipo = (String) tbQueijos.getValueAt(linhaSelecionada, 1);
+        
+        int confirmacao = JOptionPane.showConfirmDialog(null,"Deseja mesmo excluir o queijo: "+tipo+"?",
+          "Janela de confirmação",JOptionPane.YES_NO_OPTION);
+        
+        System.out.println(confirmacao);
+        
+        if (confirmacao == 0){
+            try {
+                QueijoDAO queijoDAO = new QueijoDAO();
+                queijoDAO.remove(id);
+                JOptionPane.showMessageDialog(null, "Queijo removido com sucesso!");
+                buscarQueijos();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
+    }//GEN-LAST:event_btRemoverQueijosActionPerformed
+
+    private void btEditarQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarQueijosActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tbQueijos.getSelectedRow();
+        int id = (int) tbQueijos.getValueAt(linhaSelecionada, 0);
+        String tipo = (String) tbQueijos.getValueAt(linhaSelecionada, 1);
+        float peso = (float) tbQueijos.getValueAt(linhaSelecionada, 2);
+        float valorkg = (float) tbQueijos.getValueAt(linhaSelecionada, 3);
+        float temperatura = (float) tbQueijos.getValueAt(linhaSelecionada, 4);
+        
+        idEditarQueijo = id;
+        tfPeso.setText(String.valueOf(peso));
+        tfTipoQueijo.setText(tipo);
+        tfValorKg.setText(String.valueOf(valorkg));
+        tfTemperatura.setText(String.valueOf(temperatura));
+        
+        lpQueijos.moveToFront(lpEditarQueijos);
+        lpQueijos.moveToBack(lpAcoesQueijos);
+        lpEditarQueijos.setVisible(true);
+        lpAcoesQueijos.setVisible(false);
+    }//GEN-LAST:event_btEditarQueijosActionPerformed
+
+    private void btImprimirQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirQueijosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btImprimirQueijosActionPerformed
+
+    private void btCancelarQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarQueijosActionPerformed
+        // TODO add your handling code here:
+        tfPeso.setText("");
+        tfValorKg.setText("");
+        tfTipoQueijo.setText("");
+        tfTemperatura.setText("");
+        idEditarQueijo = -1;
+        
+        lpQueijos.moveToFront(lpAcoesQueijos);
+        lpQueijos.moveToBack(lpEditarQueijos);
+        lpAcoesQueijos.setVisible(true);
+        lpEditarQueijos.setVisible(false);
+    }//GEN-LAST:event_btCancelarQueijosActionPerformed
+
+    private void btSalvarQueijosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarQueijosActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            QueijoDAO queijoDAO = new QueijoDAO();
+            Queijo queijo = new Queijo(idEditarQueijo, Float.parseFloat(tfPeso.getText()), Float.parseFloat(tfValorKg.getText()), tfTipoQueijo.getText(), 
+                                            Float.parseFloat(tfTemperatura.getText()));
+            
+            queijoDAO.update(queijo);
+            
+            tfPeso.setText("");
+            tfValorKg.setText("");
+            tfTipoQueijo.setText("");
+            tfTemperatura.setText("");
+            
+            JOptionPane.showMessageDialog(null, "Queijo atualizado com sucesso!");
+            iniciarQueijos();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btSalvarQueijosActionPerformed
+
+    private void tfBuscarPedidosInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tfBuscarPedidosInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarPedidosInputMethodTextChanged
+
+    private void tfBuscarPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBuscarPedidosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfBuscarPedidosActionPerformed
+
+    private void tfIdPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfIdPedidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfIdPedidoActionPerformed
+
+    private void btInserirPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInserirPedidosActionPerformed
+        // TODO add your handling code here:
+        try {
+            PedidoDAO pedidoDAO = new PedidoDAO();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            Pedido pedido = new Pedido(0, LocalDateTime.parse(ftData.getText() + " 00:00", formatter), LocalDateTime.parse(ftPrazo.getText() + " 00:00", formatter), jcPedidos.getSelectedItem().toString(), "");
+            System.out.println(pedido.toString());
+            pedidoDAO.inserir(pedido);
+            
+            ftData.setText("");
+            ftPrazo.setText("");
+            tfTipoQueijo.setText("");
+            jcPedidos.setSelectedIndex(0);
+            
+            JOptionPane.showMessageDialog(null, "Pedido inserido com sucesso!");
+            buscarQueijos();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btInserirPedidosActionPerformed
+
+    private void btRemoverPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverPedidosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btRemoverPedidosActionPerformed
+
+    private void btEditarPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarPedidosActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tbPedidos.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(null, "Você precisa selecionar um registro na lista antes de realizar essa operação.",
+                    "ERRO!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        int idPedido = (int) tbPedidos.getValueAt(linhaSelecionada, 0);
+        LocalDateTime data = (LocalDateTime) LocalDateTime.parse(tbPedidos.getValueAt(linhaSelecionada, 1) + " 00:00", formatter);
+        LocalDateTime prazo = (LocalDateTime) LocalDateTime.parse(tbPedidos.getValueAt(linhaSelecionada, 2) + " 00:00", formatter);
+        String cpf = (String) tbPedidos.getValueAt(linhaSelecionada, 3);
+        String nomeCliente = (String) tbPedidos.getValueAt(linhaSelecionada, 4);
+
+        tfIdPedido.setText(String.valueOf(idPedido));
+        ftData.setText(data.toLocalDate().format(formatter2).toString());
+        ftPrazo.setValue(prazo.toLocalDate().format(formatter2).toString());
+        jcPedidos.setSelectedIndex(clientesCpfs.indexOf(cpf)+1);
+
+        lpPedidos.moveToFront(lpEditarPedidos);
+        lpPedidos.moveToBack(lpAcoesPedidos);
+        lpEditarPedidos.setVisible(true);
+        lpAcoesPedidos.setVisible(false);
+    }//GEN-LAST:event_btEditarPedidosActionPerformed
+
+    private void btImprimirPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirPedidosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btImprimirPedidosActionPerformed
+
+    private void btCancelarPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarPedidosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btCancelarPedidosActionPerformed
+
+    private void btSalvarPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarPedidosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSalvarPedidosActionPerformed
+
+    private void ftDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftDataActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ftDataActionPerformed
+
+    private void ftPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftPrazoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ftPrazoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -607,33 +1436,25 @@ public class Menu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Menu menu = new Menu();
+                try {
+                    menu.ftData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+                    menu.ftPrazo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+                } catch (ParseException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 menu.setVisible(true);
                 menu.iniciarClientes();
+                menu.iniciarQueijos();
+                menu.iniciarPedidos();
             }
         });
     }
     
     public void montarTbClientes(ArrayList<Cliente> clientes){
-        DefaultTableModel model;
-        model = new DefaultTableModel(new String[] {"CPF", "Nome", "Telefone", "Endereço", "Instagram", "Facebook", "Cartão de Crédito"}, 0);
-
+        ClientesModel model = new ClientesModel();
+        
         clientes.forEach((Cliente cliente) -> {
-            String cpf = cliente.getCpf();
-            String nome = cliente.getNome();
-            String telefone = cliente.getTelefone();
-            String endereco = cliente.getEndereco();
-            String instagram = cliente.getEndInstagram();
-            String facebook = cliente.getEndFacebook();
-            String cartao = cliente.getCartaoDeCredito();
-            Vector row = new Vector();
-            row.add(cpf);
-            row.add(nome);
-            row.add(telefone);
-            row.add(endereco);
-            row.add(instagram);
-            row.add(facebook);
-            row.add(cartao);
-            model.addRow(row);
+            model.addRow(cliente);
         });
 
         tbClientes.setModel(model);
@@ -641,10 +1462,10 @@ public class Menu extends javax.swing.JFrame {
         tbClientes.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
-    public ArrayList<Cliente> filtrarListaCliente(ArrayList<Cliente> clientes, String busca){
+    public ArrayList<Cliente> filtrarListaCliente(String busca){
         ArrayList<Cliente> clientesFiltrados = new ArrayList();
         clientes.forEach((cliente) -> {
-            if (cliente.getCpf().contains(busca) || cliente.getNome().contains(busca) || busca == ""){
+            if (cliente.getCpf().contains(busca) || cliente.getNome().toUpperCase().contains(busca.toUpperCase()) || busca == ""){
                 clientesFiltrados.add(cliente);
             }
         });
@@ -652,96 +1473,320 @@ public class Menu extends javax.swing.JFrame {
         return (clientesFiltrados);
     }
     
-    public void montarFiltro(ArrayList<Cliente> clientes){
-        tfBuscar.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    String busca = tfBuscar.getText();
-                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
-                    montarTbClientes(clientesFiltrados);
-                }
+    public void montarFiltroClientes(){
+        tfBuscarCliente.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String busca = tfBuscarCliente.getText();
+                ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(busca);
+                montarTbClientes(clientesFiltrados);
+            }
 
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    String busca = tfBuscar.getText();
-                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
-                    montarTbClientes(clientesFiltrados);
-                }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String busca = tfBuscarCliente.getText();
+                ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(busca);
+                montarTbClientes(clientesFiltrados);
+            }
 
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    String busca = tfBuscar.getText();
-                    ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(clientes, busca);
-                    montarTbClientes(clientesFiltrados);
-                }
-            });
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String busca = tfBuscarCliente.getText();
+                ArrayList<Cliente> clientesFiltrados = filtrarListaCliente(busca);
+                montarTbClientes(clientesFiltrados);
+            }
+        });
     }
     
     public void buscarClientes(){
         try {
             tbClientes.setAutoCreateRowSorter(true);
-            ArrayList<Cliente> clientes = new ArrayList();
+            clientes = new ArrayList();
             ClienteDAO clienteDAO = new ClienteDAO();
             
             clientes = clienteDAO.get();
             
             montarTbClientes(clientes);
-            montarFiltro(clientes);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
+    
+    public void iniciarClientes(){
+        buscarClientes();
+        tfCpf.setEditable(true);
+        lpClientes.moveToFront(lpAcoesClientes);
+        lpClientes.moveToBack(lpEditarClientes);
+        lpEditarClientes.setVisible(false);
+        lpAcoesClientes.setVisible(true);
+        montarFiltroClientes();
+
+//        btEditar.setEnabled(false);
+//        btRemover.setEnabled(false);      
+    }
+    
+    public void iniciarQueijos(){
+        buscarQueijos();
+        lpQueijos.moveToFront(lpAcoesQueijos);
+        lpQueijos.moveToBack(lpEditarQueijos);
+        lpEditarQueijos.setVisible(false);
+        lpAcoesQueijos.setVisible(true);
+        montarFiltroQueijos();
+    }
+       
+    public void buscarQueijos(){
+        try {
+            tbQueijos.setAutoCreateRowSorter(true);
+            queijos = new ArrayList();
+            QueijoDAO queijoDAO = new QueijoDAO();
+            
+            queijos = queijoDAO.get();
+            
+            Queijo queijoMaisCaro = queijoDAO.getMaisCaro();
+            Queijo queijoMenorTemperatura = queijoDAO.getMenorTemperatura();
+            
+            if (queijoMaisCaro != null){
+                lbMaisCaro.setText(String.valueOf(queijoMaisCaro.getTipoDoQueijo()));
+            }
+            if (queijoMenorTemperatura != null){
+                lbMenorTemperatura.setText(String.valueOf(queijoMenorTemperatura.getTipoDoQueijo()));
+            }
+            
+            
+            montarTbQueijos(queijos);
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    
-    
-    public void iniciarClientes(){
-        buscarClientes();
-        tfCpf.setEditable(true);
-        lpClientes.moveToFront(lpAcoes);
-        lpClientes.moveToBack(lpEditar);
-        lpEditar.setVisible(false);
-        lpAcoes.setVisible(true);
+    public void montarTbQueijos(ArrayList<Queijo> queijos){
+        QueijosModel model = new QueijosModel();
 
-//        btEditar.setEnabled(false);
-//        btRemover.setEnabled(false);      
+        queijos.forEach((Queijo queijo) -> {
+            model.addRow(queijo);
+        });
+
+        tbQueijos.setModel(model);
+        tbQueijos.setDefaultEditor(Object.class, null);
+        tbQueijos.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public void montarFiltroQueijos(){
+        tfBuscarQueijos.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String busca = tfBuscarQueijos.getText();
+                ArrayList<Queijo> queijosFiltrados = filtrarListaQueijo(busca);
+                montarTbQueijos(queijosFiltrados);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String busca = tfBuscarQueijos.getText();
+                ArrayList<Queijo> queijosFiltrados = filtrarListaQueijo(busca);
+                montarTbQueijos(queijosFiltrados);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String busca = tfBuscarQueijos.getText();
+                ArrayList<Queijo> queijosFiltrados = filtrarListaQueijo(busca);
+                montarTbQueijos(queijosFiltrados);
+            }
+        });
+    }
+    
+    public ArrayList<Queijo> filtrarListaQueijo(String busca){
+        ArrayList<Queijo> queijosFiltrados = new ArrayList();
+        queijos.forEach((queijo) -> {
+            if (queijo.getTipoDoQueijo().toUpperCase().contains(busca.toUpperCase()) || busca == ""){
+                queijosFiltrados.add(queijo);
+            }
+        });
+        
+        return (queijosFiltrados);
+    }
+    
+    public void iniciarPedidos(){
+        buscarPedidos();
+        lpPedidos.moveToFront(lpAcoesPedidos);
+        lpPedidos.moveToBack(lpEditarPedidos);
+        lpEditarPedidos.setVisible(false);
+        lpAcoesPedidos.setVisible(true);
+        montarFiltroPedidos();
+    }
+    
+    public void buscarPedidos(){
+        try {
+            tbPedidos.setAutoCreateRowSorter(true);
+            pedidos = new ArrayList();
+            PedidoDAO pedidoDAO = new PedidoDAO();
+            
+            pedidos = pedidoDAO.get();            
+            
+            buscarClientes();
+            jcPedidos.removeAllItems();
+            jcPedidos.addItem("---------");
+            clientes.forEach(cliente -> {
+                jcPedidos.addItem(String.valueOf(cliente.getCpf()));
+                clientesCpfs.add(cliente.getCpf());
+            });
+            
+            montarTbPedidos(pedidos);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void montarTbPedidos(ArrayList<Pedido> pedidos){
+        PedidosModel model = new PedidosModel();
+
+        pedidos.forEach((Pedido pedido) -> {
+            model.addRow(pedido);
+        });
+
+        tbPedidos.setModel(model);
+        tbPedidos.setDefaultEditor(Object.class, null);
+        tbPedidos.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public void montarFiltroPedidos(){
+        tfBuscarPedidos.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String busca = tfBuscarPedidos.getText();
+                ArrayList<Pedido> pedidosFiltrados = filtrarListaPedido(busca);
+                montarTbPedidos(pedidosFiltrados);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String busca = tfBuscarPedidos.getText();
+                ArrayList<Pedido> pedidosFiltrados = filtrarListaPedido(busca);
+                montarTbPedidos(pedidosFiltrados);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                String busca = tfBuscarPedidos.getText();
+                ArrayList<Pedido> pedidosFiltrados = filtrarListaPedido(busca);
+                montarTbPedidos(pedidosFiltrados);
+            }
+        });
+    }
+    
+    public ArrayList<Pedido> filtrarListaPedido(String busca){
+        ArrayList<Pedido> pedidosFiltrados = new ArrayList();
+        pedidos.forEach((pedido) -> {
+            if (pedido.getId() == Integer.parseInt(busca) || busca == ""){
+                pedidosFiltrados.add(pedido);
+            }
+        });
+        
+        return (pedidosFiltrados);
     }
 
+    public ArrayList<Cliente> clientes = new ArrayList();
+    public ArrayList<Queijo> queijos = new ArrayList();
+    public ArrayList<Pedido> pedidos = new ArrayList();
+    public ArrayList<String> clientesCpfs = new ArrayList();
+    public int idEditarQueijo = -1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btCancelar;
-    private javax.swing.JButton btEditar;
+    private javax.swing.JButton btCancelarClientes;
+    private javax.swing.JButton btCancelarPedidos;
+    private javax.swing.JButton btCancelarQueijos;
+    private javax.swing.JButton btEditarClientes;
+    private javax.swing.JButton btEditarPedidos;
+    private javax.swing.JButton btEditarQueijos;
     private javax.swing.JButton btImprimirClientes;
-    private javax.swing.JButton btInserir;
-    private javax.swing.JButton btRemover;
-    private javax.swing.JButton btSalvar;
+    private javax.swing.JButton btImprimirPedidos;
+    private javax.swing.JButton btImprimirQueijos;
+    private javax.swing.JButton btInserirClientes;
+    private javax.swing.JButton btInserirPedidos;
+    private javax.swing.JButton btInserirQueijos;
+    private javax.swing.JButton btRemoverClientes;
+    private javax.swing.JButton btRemoverPedidos;
+    private javax.swing.JButton btRemoverQueijos;
+    private javax.swing.JButton btSalvarClientes;
+    private javax.swing.JButton btSalvarPedidos;
+    private javax.swing.JButton btSalvarQueijos;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.JFormattedTextField ftData;
+    private javax.swing.JFormattedTextField ftPrazo;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JComboBox<String> jcPedidos;
+    private javax.swing.JLabel lbBuscarCliente;
+    private javax.swing.JLabel lbBuscarPedidos;
+    private javax.swing.JLabel lbBuscarQueijos;
     private javax.swing.JLabel lbCartao;
     private javax.swing.JLabel lbCpf;
+    private javax.swing.JLabel lbData;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbFacebook;
+    private javax.swing.JLabel lbIdCliente;
+    private javax.swing.JLabel lbIdPedido;
     private javax.swing.JLabel lbInstagram;
+    private javax.swing.JLabel lbLabelMaisCaro;
+    private javax.swing.JLabel lbLabelMenorTemperatura;
+    private javax.swing.JLabel lbMaisCaro;
+    private javax.swing.JLabel lbMenorTemperatura;
     private javax.swing.JLabel lbNome;
+    private javax.swing.JLabel lbPeso;
+    private javax.swing.JLabel lbPrazo;
     private javax.swing.JLabel lbTelefone;
-    private javax.swing.JPanel lpAcoes;
+    private javax.swing.JLabel lbTemperatura;
+    private javax.swing.JLabel lbTipoQueijo;
+    private javax.swing.JLabel lbValorKg;
+    private javax.swing.JPanel lpAcoesClientes;
+    private javax.swing.JPanel lpAcoesPedidos;
+    private javax.swing.JPanel lpAcoesQueijos;
     private javax.swing.JLayeredPane lpClientes;
-    private javax.swing.JPanel lpEditar;
+    private javax.swing.JPanel lpEditarClientes;
+    private javax.swing.JPanel lpEditarPedidos;
+    private javax.swing.JPanel lpEditarQueijos;
+    private javax.swing.JLayeredPane lpPedidos;
+    private javax.swing.JLayeredPane lpQueijos;
     private javax.swing.JPanel pnAcoesClientes;
-    private javax.swing.JPanel pnBuscar;
+    private javax.swing.JPanel pnAcoesClientes1;
+    private javax.swing.JPanel pnAcoesPedidos;
+    private javax.swing.JPanel pnBuscarClientes;
+    private javax.swing.JPanel pnBuscarPedidos;
+    private javax.swing.JPanel pnBuscarQueijos;
     private javax.swing.JPanel pnClientes;
     private javax.swing.JPanel pnContentClientes;
+    private javax.swing.JPanel pnContentPedidos;
+    private javax.swing.JPanel pnContentQueijos;
     private javax.swing.JPanel pnPedidos;
     private javax.swing.JPanel pnQueijos;
     private javax.swing.JTable tbClientes;
-    private javax.swing.JTextField tfBuscar;
+    private javax.swing.JTable tbPedidos;
+    private javax.swing.JTable tbQueijos;
+    private javax.swing.JTextField tfBuscarCliente;
+    private javax.swing.JTextField tfBuscarPedidos;
+    private javax.swing.JTextField tfBuscarQueijos;
     private javax.swing.JTextField tfCartao;
     private javax.swing.JTextField tfCpf;
     private javax.swing.JTextField tfEndereco;
     private javax.swing.JTextField tfFacebook;
+    private javax.swing.JTextField tfIdPedido;
     private javax.swing.JTextField tfInstagram;
     private javax.swing.JTextField tfNome;
+    private javax.swing.JTextField tfPeso;
     private javax.swing.JTextField tfTelefone;
+    private javax.swing.JTextField tfTemperatura;
+    private javax.swing.JTextField tfTipoQueijo;
+    private javax.swing.JTextField tfValorKg;
     // End of variables declaration//GEN-END:variables
 
 }

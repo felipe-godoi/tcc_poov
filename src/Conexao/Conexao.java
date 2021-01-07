@@ -1,26 +1,32 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Conexao;
 
-import Principal.Principal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ *
+ * @author feeh0
+ */
 public class Conexao {
     public static Connection getConexao() throws SQLException{
         Connection connection=null;
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             
-            System.out.println("Connected to PostgreSQL database");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/TCC", "sa", "zaq1ZAQ!");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tcc", "root", "123456");
+            System.out.println("Connected to MySQL database");
         } catch (SQLException e) {
-            System.out.println("Connection failure.");
+            System.out.println("\n Erro ao conectar: "+e.toString());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("\n Erro ao conectar: "+ex.toString());
         }
         
         return (connection);
-    } 
+    }
 }
